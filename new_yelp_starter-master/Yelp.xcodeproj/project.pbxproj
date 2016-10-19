@@ -14,6 +14,8 @@
 		A5CA68931DB3E1EA0085DCF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5CA68911DB3E1EA0085DCF9 /* Main.storyboard */; };
 		A5CA68951DB3E1EA0085DCF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5CA68941DB3E1EA0085DCF9 /* Assets.xcassets */; };
 		A5CA68981DB3E1EA0085DCF9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5CA68961DB3E1EA0085DCF9 /* LaunchScreen.storyboard */; };
+		F40D800C1DB7689E00DE8ED9 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D800B1DB7689E00DE8ED9 /* FiltersViewController.swift */; };
+		F4F968A51DB681600052E12F /* FoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F968A41DB681600052E12F /* FoodTableViewCell.swift */; };
 		F91065DC1B85B789A2434556 /* Pods_Yelp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2893DC5CAF45E9E472DFFCC /* Pods_Yelp.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +32,8 @@
 		A5CA68941DB3E1EA0085DCF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5CA68971DB3E1EA0085DCF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5CA68991DB3E1EA0085DCF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F40D800B1DB7689E00DE8ED9 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		F4F968A41DB681600052E12F /* FoodTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				A581AE351DB5398F006544B2 /* BusinessesViewController.swift */,
+				F4F968A41DB681600052E12F /* FoodTableViewCell.swift */,
+				F40D800B1DB7689E00DE8ED9 /* FiltersViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -243,7 +249,9 @@
 			files = (
 				A581AE361DB5398F006544B2 /* BusinessesViewController.swift in Sources */,
 				A581AE341DB53945006544B2 /* YelpClient.swift in Sources */,
+				F4F968A51DB681600052E12F /* FoodTableViewCell.swift in Sources */,
 				A581AE321DB53860006544B2 /* Business.swift in Sources */,
+				F40D800C1DB7689E00DE8ED9 /* FiltersViewController.swift in Sources */,
 				A5CA688E1DB3E1EA0085DCF9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
