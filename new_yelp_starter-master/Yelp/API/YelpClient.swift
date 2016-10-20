@@ -45,11 +45,11 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         self.requestSerializer.saveAccessToken(token)
     }
 
-    func search(with term: String, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
-        return search(with: term, sort: nil, categories: nil, deals: nil, completion: completion)
+    func search(with term: String, offset: Int?, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
+        return search(with: term, offset: offset, sort: nil, categories: nil, deals: nil/*, radius: nil*/, completion: completion)
     }
 
-    func search(with term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
+    func search(with term: String, offset: Int?, sort: YelpSortMode?, categories: [String]?, deals: Bool?/*, radius: Int?*/, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
         // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
 
         // Default the location to San Francisco
@@ -67,15 +67,20 @@ class YelpClient: BDBOAuth1RequestOperationManager {
             parameters["deals_filter"] = deals! as AnyObject?
         }
         
+        if offset != nil {
+            parameters["offset"] = offset! as AnyObject?
+        }
+        
 //        if radius != nil {
 //            parameters["radius_filter"] = radius! as AnyObject?
 //        }
 
-        print(parameters)
+        print("aaaa\(parameters)")
 
         return self.get("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation, response: Any) in
             if let response = response as? NSDictionary {
                 let dictionaries = response["businesses"] as? [NSDictionary]
+                
                 if dictionaries != nil {
                     completion(Business.businesses(array: dictionaries!), nil)
                 }

@@ -17,6 +17,7 @@
 		F40D800C1DB7689E00DE8ED9 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D800B1DB7689E00DE8ED9 /* FiltersViewController.swift */; };
 		F40D800E1DB778E000DE8ED9 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D800D1DB778E000DE8ED9 /* SwitchCell.swift */; };
 		F40D80101DB778EE00DE8ED9 /* CheckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D800F1DB778EE00DE8ED9 /* CheckCell.swift */; };
+		F47C10E71DB91FA900C67D1C /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47C10E61DB91FA900C67D1C /* InfiniteScrollActivityView.swift */; };
 		F4F968A51DB681600052E12F /* FoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F968A41DB681600052E12F /* FoodTableViewCell.swift */; };
 		F91065DC1B85B789A2434556 /* Pods_Yelp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2893DC5CAF45E9E472DFFCC /* Pods_Yelp.framework */; };
 /* End PBXBuildFile section */
@@ -37,6 +38,7 @@
 		F40D800B1DB7689E00DE8ED9 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		F40D800D1DB778E000DE8ED9 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		F40D800F1DB778EE00DE8ED9 /* CheckCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckCell.swift; sourceTree = "<group>"; };
+		F47C10E61DB91FA900C67D1C /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
 		F4F968A41DB681600052E12F /* FoodTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,9 +111,11 @@
 		A5CA688C1DB3E1EA0085DCF9 /* Yelp */ = {
 			isa = PBXGroup;
 			children = (
+				F47C10E21DB91F4B00C67D1C /* Support */,
 				A581AE2E1DB53850006544B2 /* API */,
 				A581AE2F1DB53850006544B2 /* Models */,
 				A581AE301DB53850006544B2 /* View Controllers */,
+				F47C10E31DB91F5200C67D1C /* View */,
 				A5CA688D1DB3E1EA0085DCF9 /* AppDelegate.swift */,
 				A5CA68911DB3E1EA0085DCF9 /* Main.storyboard */,
 				A5CA68941DB3E1EA0085DCF9 /* Assets.xcassets */,
@@ -128,6 +132,21 @@
 				54E6FC3FD7D2654ED0511482 /* Pods-Yelp.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F47C10E21DB91F4B00C67D1C /* Support */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		F47C10E31DB91F5200C67D1C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F47C10E61DB91FA900C67D1C /* InfiniteScrollActivityView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47C10E71DB91FA900C67D1C /* InfiniteScrollActivityView.swift in Sources */,
 				F40D80101DB778EE00DE8ED9 /* CheckCell.swift in Sources */,
 				A581AE361DB5398F006544B2 /* BusinessesViewController.swift in Sources */,
 				A581AE341DB53945006544B2 /* YelpClient.swift in Sources */,

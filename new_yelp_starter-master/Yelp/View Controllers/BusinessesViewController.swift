@@ -8,13 +8,16 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate {
+class BusinessesViewController: UIViewController {
 
     @IBOutlet weak var foodTableView: UITableView!
     var businesses: [Business]! = []
     
     let searchBar = UISearchBar()
     var isMoreDataLoading = false
+    var currentOffset = 10
+    
+    var loadingMoreView:InfiniteScrollActivityView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,29 +27,24 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UIScrollV
         self.foodTableView.rowHeight = UITableViewAutomaticDimension
         self.foodTableView.estimatedRowHeight = 100
         
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRect(x: 0, y: foodTableView.contentSize.height, width: foodTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        foodTableView.addSubview(loadingMoreView!)
+        
+        var insets = foodTableView.contentInset;
+        insets.bottom += InfiniteScrollActivityView.defaultHeight;
+        foodTableView.contentInset = insets
+        
         addSearchBar()
 
-        Business.search(with: "Thai") { (businesses: [Business]?, error: Error?) in
+        Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
                 self.businesses = businesses
-
                 self.foodTableView.reloadData()
             }
         }
-
-        // Example of Yelp search with more search options specified
-        /*
-        Business.search(with: "Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]?, error: Error?) in
-            if let businesses = businesses {
-                self.businesses = businesses
-
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
-        }
-        */
     }
 
     func addSearchBar() {
@@ -57,69 +55,85 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UIScrollV
         self.navigationItem.titleView = searchBar
     }
     
-    // MARK: - implement search bar delegate
-    
-//    // called when text changes (including clear)
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
-//        self.businessesSearchArray = businesses.filter({
-//            ($0.originalTitle?.contains(searchText))!
-//        })
-//        
-//        if searchText == "" {
-//            self.businessesSearchArray = self.businesses
-//        }
-//        
-//        self.foodTableView.reloadData()
-//    }
-    
-    // MARK: - ScrollViewDelegate
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        // Calculate the position of one screen length before the bottom of the results
-//        let scrollViewContentHeight = foodTableView.contentSize.height
-//        let scrollOffsetThreshold = scrollViewContentHeight - foodTableView.bounds.size.height
-//        
-//        // When the user has scrolled past the threshold, start requesting
-//        if(scrollView.contentOffset.y > scrollOffsetThreshold && foodTableView.isDragging) {
-//            isMoreDataLoading = true
-//            
-//            // Code to load more results
-//            loadMoreData()
-//        }
-//    }
-//    
-//    func loadMoreData() {
-//        
-//        // ... Create the NSURLRequest (myRequest) ...
-//        
-//        // Configure session so that completion handler is executed on main UI thread
-//        let session = URLSession(
-//            configuration: URLSessionConfiguration.default,
-//            delegate:nil,
-//            delegateQueue:OperationQueue.main
-//        )
-//        
-//        let task : URLSessionDataTask = session.dataTaskWithRequest(myRequest, completionHandler: { (data, response, error) in
-//            
-//            // Update flag
-//            self.isMoreDataLoading = false
-//            
-//            // Stop the loading indicator
-//            self.loadingMoreView!.stopAnimating()
-//            
-//            // ... Use the new data to update the data source ...
-//            
-//            // Reload the tableView now that there is new data
-//            self.myTableView.reloadData()
-//        });
-//        task.resume()
-//    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let navigationController = segue.destination as! UINavigationController
         let filterVC = navigationController.topViewController as! FiltersViewController
         
         filterVC.delegate = self
+    }
+}
+
+extension BusinessesViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    // called when text changes (including clear)
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
+        currentOffset = 10
+        
+        Business.search(with: searchText, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+            if let businesses = businesses {
+                self.businesses = businesses
+            }
+        }
+        
+        if searchText == "" {
+            Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+                if let businesses = businesses {
+                    self.businesses = businesses
+                }
+            }
+        }
+        
+        self.foodTableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    
+}
+
+extension BusinessesViewController: UIScrollViewDelegate {
+    
+    func loadMoreData() {
+        self.currentOffset += 10
+        Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+            if let businesses = businesses {
+                self.businesses = businesses
+                self.isMoreDataLoading = false
+                
+                // Stop the loading indicator
+                self.loadingMoreView!.stopAnimating()
+                
+                self.foodTableView.reloadData()
+            }
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = foodTableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - foodTableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && foodTableView.isDragging) {
+                isMoreDataLoading = true
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRect(x: 0, y: foodTableView.contentSize.height, width: foodTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                // Code to load more results
+                loadMoreData()
+            }
+        }
     }
 }
 
@@ -137,13 +151,9 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource, 
         return cell
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
-    
     func filterData(filtersViewController: FiltersViewController, didUpdate filters: [String], isDeal: Bool, sortBy: Int, radius: Int) {
-        //print("aaa\(isDeal)")
-        Business.search(with: "Thai", sort: YelpSortMode(rawValue: sortBy), categories: filters, deals: isDeal) { (business: [Business]?, error: Error?) in
+        
+        Business.search(with: "Thai", offset: self.currentOffset, sort: YelpSortMode(rawValue: sortBy), categories: filters, deals: isDeal) { (business: [Business]?, error: Error?) in
             if let businesses = business {
                 self.businesses = businesses
                 

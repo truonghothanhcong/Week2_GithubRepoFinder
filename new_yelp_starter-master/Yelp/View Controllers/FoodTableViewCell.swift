@@ -21,13 +21,27 @@ class FoodTableViewCell: UITableViewCell {
     
     var business: Business! {
         didSet {
-            self.foodImageView.setImageWith(business.imageURL!)
-            self.foodNameLabel.text = business.name
-            self.distanceLabel.text = business.distance
-            self.addressLabel.text = business.address
-            self.categoriesLabel.text = business.categories
-            self.reviewImageView.setImageWith(business.ratingImageURL!)
-            self.reviewCountLabel.text = "\(business.reviewCount!) Reviews"
+            if let imageURL = business.imageURL {
+                self.foodImageView.setImageWith(imageURL)
+            }
+            if let name = business.name {
+                self.foodNameLabel.text = name
+            }
+            if let distance = business.distance {
+                self.distanceLabel.text = distance
+            }
+            if let address = business.address {
+                self.addressLabel.text = address
+            }
+            if let categories = business.categories {
+                self.categoriesLabel.text = categories
+            }
+            if let imageURL = business.ratingImageURL {
+                self.reviewImageView.setImageWith(imageURL)
+            }
+            if let reviewCount = business.reviewCount {
+                self.reviewCountLabel.text = "\(reviewCount) Reviews"
+            }
         }
     }
     
