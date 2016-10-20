@@ -27,7 +27,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="189"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CQd-ZD-IAo" id="MiT-tb-r5W">
-                                            <frame key="frameInset" width="375" height="188.5"/>
+                                            <frame key="frameInset" width="375" height="188"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="d3y-ph-Zdg"/>
@@ -102,7 +102,7 @@
                                         <rect key="frame" x="0.0" y="217" width="375" height="128"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i6m-YQ-8OH" id="rKB-1p-YNb">
-                                            <frame key="frameInset" width="375" height="127.5"/>
+                                            <frame key="frameInset" width="375" height="127"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7Y-fQ-efv">
@@ -179,7 +179,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.84293326175757466" green="0.84293326175757466" blue="0.84293326175757466" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.77764118020304562" green="0.11632797472423821" blue="0.006718651454537896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="F7Y-fQ-efv" firstAttribute="top" secondItem="rKB-1p-YNb" secondAttribute="top" constant="5" id="AXo-Gc-78Z"/>
                                                 <constraint firstItem="F7Y-fQ-efv" firstAttribute="leading" secondItem="rKB-1p-YNb" secondAttribute="leading" constant="8" id="Gqj-aI-PaC"/>
@@ -210,6 +210,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="6gC-p8-uhD">
                         <barButtonItem key="leftBarButtonItem" title="Filter" id="KBL-2H-ib3">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                     <integer key="value" value="1"/>
@@ -254,7 +255,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ayp-gJ-iCd" id="4BT-9A-aF4">
-                                            <frame key="frameInset" width="375" height="43.5"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdT-XQ-x81">
@@ -317,6 +318,25 @@
                                             <outlet property="stateButton" destination="Zr9-GC-10u" id="6sX-PG-rdF"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="seeAllCell" id="qy7-al-XNw">
+                                        <rect key="frame" x="0.0" y="116" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qy7-al-XNw" id="LVu-zq-eWN">
+                                            <frame key="frameInset" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9u3-nK-HRc">
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="9u3-nK-HRc" firstAttribute="centerY" secondItem="LVu-zq-eWN" secondAttribute="centerY" id="ZCq-Pw-H7N"/>
+                                                <constraint firstItem="9u3-nK-HRc" firstAttribute="centerX" secondItem="LVu-zq-eWN" secondAttribute="centerX" id="fhr-Kc-7WC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
@@ -330,11 +350,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="8SM-XD-TLc">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="0z2-DE-BUI">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="cancelView:" destination="VL1-Hm-FaJ" id="zyQ-r4-pfA"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Search" id="Yv1-rM-lGK">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onFilterData:" destination="VL1-Hm-FaJ" id="s6f-97-hc1"/>
                             </connections>
@@ -356,6 +378,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xCk-rc-fnl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="0.14959081088512372" blue="0.0086397835217312258" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -374,6 +397,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ufH-Y0-rVd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

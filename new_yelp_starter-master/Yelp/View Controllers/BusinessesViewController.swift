@@ -17,7 +17,7 @@ class BusinessesViewController: UIViewController {
     var isMoreDataLoading = false
     var currentOffset = 10
     
-    var loadingMoreView:InfiniteScrollActivityView?
+    var loadingMoreView: InfiniteScrollActivityView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +31,7 @@ class BusinessesViewController: UIViewController {
         let frame = CGRect(x: 0, y: foodTableView.contentSize.height, width: foodTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
         loadingMoreView!.isHidden = true
+        //loadingMoreView?.color = UIColor(colorLiteralRed: 198, green: 30, blue: 2, alpha: 1)
         foodTableView.addSubview(loadingMoreView!)
         
         var insets = foodTableView.contentInset;

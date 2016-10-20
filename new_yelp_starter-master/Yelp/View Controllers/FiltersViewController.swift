@@ -191,6 +191,7 @@ class FiltersViewController: UIViewController {
     var sortBySelected = -1
     var isSwitchDistanceOn = false
     var isSwitchSortOn = false
+    var isExpandCategory = false
 
     @IBOutlet weak var filtersTableView: UITableView!
     
@@ -275,6 +276,12 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
                 return cell
             }
         } else {                            // state for category
+            if !isExpandCategory && indexPath.row == 3 {
+                let cell = filtersTableView.dequeueReusableCell(withIdentifier: "seeAllCell", for: indexPath)
+                
+                return cell
+            }
+            
             let cell = filtersTableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath) as! SwitchCell
             
             cell.categoryLabel.text = self.categoriesArray[indexPath.row]["name"]
@@ -294,7 +301,11 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
         } else if section == 2 {
             return sortByArray.count + 1
         } else {
-            return categoriesArray.count
+            if isExpandCategory {
+                return categoriesArray.count
+            } else {
+                return 4
+            }
         }
     }
     
@@ -331,6 +342,11 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
         } else if indexPath.section == 2 {
             sortBySelected = indexPath.row - 1
             filtersTableView.reloadSections(IndexSet(integer: 2), with: .none)
+        } else if indexPath.section == 3 {
+            if !isExpandCategory && indexPath.row == 3 {
+                isExpandCategory = true
+                filtersTableView.reloadSections(IndexSet(integer: 3), with: .automatic)
+            }
         }
     }
     
