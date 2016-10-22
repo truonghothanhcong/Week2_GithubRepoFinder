@@ -335,6 +335,19 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
         return 10
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return "Distance"
+        case 2:
+            return "Sort By"
+        case 3:
+            return "Category"
+        default:
+            return ""
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             selectedDistance = distanceArray[indexPath.row - 1]

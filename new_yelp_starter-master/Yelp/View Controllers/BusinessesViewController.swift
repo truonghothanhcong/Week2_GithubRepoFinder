@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class BusinessesViewController: UIViewController {
 
@@ -31,7 +32,6 @@ class BusinessesViewController: UIViewController {
         let frame = CGRect(x: 0, y: foodTableView.contentSize.height, width: foodTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
         loadingMoreView!.isHidden = true
-        //loadingMoreView?.color = UIColor(colorLiteralRed: 198, green: 30, blue: 2, alpha: 1)
         foodTableView.addSubview(loadingMoreView!)
         
         var insets = foodTableView.contentInset;
@@ -39,11 +39,17 @@ class BusinessesViewController: UIViewController {
         foodTableView.contentInset = insets
         
         addSearchBar()
+        
+        // show progress hub
+        MBProgressHUD.showAdded(to: self.view, animated: true)
 
         Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
                 self.businesses = businesses
                 self.foodTableView.reloadData()
+                
+                // hide progress hub
+                MBProgressHUD.hide(for: self.view, animated: true)
             }
         }
     }
@@ -154,11 +160,14 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource, 
     
     func filterData(filtersViewController: FiltersViewController, didUpdate filters: [String], isDeal: Bool, sortBy: Int, radius: Int) {
         
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         Business.search(with: "Thai", offset: self.currentOffset, sort: YelpSortMode(rawValue: sortBy), categories: filters, deals: isDeal) { (business: [Business]?, error: Error?) in
             if let businesses = business {
                 self.businesses = businesses
-                
                 self.foodTableView.reloadData()
+                
+                // hide progress hub
+                MBProgressHUD.hide(for: self.view, animated: true)
             }
         }
     }
