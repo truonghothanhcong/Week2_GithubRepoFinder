@@ -45,6 +45,15 @@ class BusinessesViewController: UIViewController {
         
         // show progress hub
         MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        // Initialize a UIRefreshControl
+        let refreshControlCollection = UIRefreshControl()
+        refreshControlCollection.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
+        let refreshControlTable = UIRefreshControl()
+        refreshControlTable.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
+        
+        // add refresh control to table view
+        foodTableView.insertSubview(refreshControlTable, at: 0)
 
         // load data
         Business.search(with: Global.restaurentKeySearch, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
@@ -86,6 +95,29 @@ class BusinessesViewController: UIViewController {
             heightMapConstraint.constant -= translation.y
         }
         recognizer.setTranslation(CGPoint.zero, in: self.view)
+    }
+    
+    // MARK: - refreshControl
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        // reset offset page
+        currentOffset = 10
+        // reset movies array
+        businesses = []
+        
+        // load data
+        Business.search(with: Global.restaurentKeySearch, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+            if let businesses = businesses {
+                self.businesses = businesses
+                self.foodTableView.reloadData()
+                self.addListAnnotation(from: businesses, to: self.mapView)
+                
+                // Tell the refreshControl to stop spinning
+                refreshControl.endRefreshing()
+                // hide progress hub
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        }
     }
 }
 

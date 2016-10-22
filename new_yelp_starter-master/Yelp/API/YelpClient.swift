@@ -46,7 +46,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
     }
 
     func search(with term: String, offset: Int?, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
-        return search(with: term, offset: offset, sort: nil, categories: nil, deals: nil, radius: nil, completion: completion)
+        return search(with: term, offset: offset, sort: nil, categories: nil, deals: false, radius: nil, completion: completion)
     }
 
     func search(with term: String, offset: Int?, sort: YelpSortMode?, categories: [String]?, deals: Bool?, radius: Int?, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
