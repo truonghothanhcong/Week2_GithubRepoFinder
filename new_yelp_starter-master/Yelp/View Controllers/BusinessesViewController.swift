@@ -8,9 +8,12 @@
 
 import UIKit
 import MBProgressHUD
+import MapKit
 
 class BusinessesViewController: UIViewController {
 
+    @IBOutlet weak var heightMapConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var foodTableView: UITableView!
     var businesses: [Business]! = []
     
@@ -47,6 +50,7 @@ class BusinessesViewController: UIViewController {
             if let businesses = businesses {
                 self.businesses = businesses
                 self.foodTableView.reloadData()
+                self.addListAnnotation(from: businesses, to: self.mapView)
                 
                 // hide progress hub
                 MBProgressHUD.hide(for: self.view, animated: true)
@@ -67,6 +71,49 @@ class BusinessesViewController: UIViewController {
         let filterVC = navigationController.topViewController as! FiltersViewController
         
         filterVC.delegate = self
+    }
+    
+    @IBAction func handlePan(recognizer:UIPanGestureRecognizer) {
+        let translation = recognizer.translation(in: self.view)
+        if let view = recognizer.view {
+            view.center = CGPoint(x:view.center.x, y:view.center.y + translation.y)
+            heightMapConstraint.constant -= translation.y
+        }
+        recognizer.setTranslation(CGPoint.zero, in: self.view)
+    }
+}
+
+extension BusinessesViewController {
+    func createAnnotation(latitude: NSNumber, longitude: NSNumber, title: String, address: String) -> MKPointAnnotation {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2DMake(CLLocationDegrees(latitude), CLLocationDegrees(longitude))
+        annotation.title = title
+        annotation.subtitle = address
+        
+        return annotation
+    }
+    
+    func moveView(latitude: NSNumber, longitude: NSNumber) {
+        let location = CLLocationCoordinate2DMake(CLLocationDegrees(latitude), CLLocationDegrees(longitude))
+        
+        let span = MKCoordinateSpanMake(0.1, 0.1)
+        let region = MKCoordinateRegion(center: location, span: span)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func addListAnnotation(from businessArray: [Business], to mapView: MKMapView) {
+        var annotationArray = [MKPointAnnotation]()
+        for business in businessArray {
+            guard let latitude = business.latitude else { continue }
+            guard let longitude = business.longitude else { continue }
+            guard let title = business.name else { continue }
+            guard let address = business.address else { continue }
+            
+            annotationArray.append(createAnnotation(latitude: latitude, longitude: longitude, title: title, address: address))
+        }
+        
+        mapView.addAnnotations(annotationArray)
+        moveView(latitude: 37.785771, longitude: -122.406165)
     }
 }
 
