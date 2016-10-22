@@ -375,10 +375,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="spe-vh-TY7" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xCk-rc-fnl">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xCk-rc-fnl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="1" green="0.14959081088512372" blue="0.0086397835217312258" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="1" green="0.14959081090000001" blue="0.0086397835220000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
