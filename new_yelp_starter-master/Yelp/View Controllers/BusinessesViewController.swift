@@ -19,7 +19,7 @@ class BusinessesViewController: UIViewController {
     
     let searchBar = UISearchBar()
     var isMoreDataLoading = false
-    var currentOffset = 10
+    var currentOffset = Global.offsetPage
     
     var loadingMoreView: InfiniteScrollActivityView?
 
@@ -29,7 +29,7 @@ class BusinessesViewController: UIViewController {
         self.foodTableView.delegate = self;
         self.foodTableView.dataSource = self;
         self.foodTableView.rowHeight = UITableViewAutomaticDimension
-        self.foodTableView.estimatedRowHeight = 100
+        self.foodTableView.estimatedRowHeight = CGFloat(Global.rowHeight)
         
         // Set up Infinite Scroll loading indicator
         let frame = CGRect(x: 0, y: foodTableView.contentSize.height, width: foodTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
@@ -46,7 +46,8 @@ class BusinessesViewController: UIViewController {
         // show progress hub
         MBProgressHUD.showAdded(to: self.view, animated: true)
 
-        Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+        // load data
+        Business.search(with: Global.restaurentKeySearch, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
                 self.businesses = businesses
                 self.foodTableView.reloadData()
@@ -59,10 +60,12 @@ class BusinessesViewController: UIViewController {
     }
 
     func addSearchBar() {
+        // init for search bar
         self.searchBar.showsCancelButton = false
         self.searchBar.placeholder = "Restaurants"
         self.searchBar.delegate = self
         
+        // add search bar to navigation bar
         self.navigationItem.titleView = searchBar
     }
     
@@ -73,10 +76,13 @@ class BusinessesViewController: UIViewController {
         filterVC.delegate = self
     }
     
+    // handle for change size of mapView and tableView
     @IBAction func handlePan(recognizer:UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: self.view)
         if let view = recognizer.view {
+            // change y value of view
             view.center = CGPoint(x:view.center.x, y:view.center.y + translation.y)
+            // change constrant height of map view
             heightMapConstraint.constant -= translation.y
         }
         recognizer.setTranslation(CGPoint.zero, in: self.view)
@@ -93,7 +99,7 @@ extension BusinessesViewController {
         return annotation
     }
     
-    func moveView(latitude: NSNumber, longitude: NSNumber) {
+    func moveView(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let location = CLLocationCoordinate2DMake(CLLocationDegrees(latitude), CLLocationDegrees(longitude))
         
         let span = MKCoordinateSpanMake(0.1, 0.1)
@@ -102,6 +108,10 @@ extension BusinessesViewController {
     }
     
     func addListAnnotation(from businessArray: [Business], to mapView: MKMapView) {
+        // clean map
+        mapView.removeAnnotations(mapView.annotations)
+        
+        // get annotation array to show on map
         var annotationArray = [MKPointAnnotation]()
         for business in businessArray {
             guard let latitude = business.latitude else { continue }
@@ -112,8 +122,13 @@ extension BusinessesViewController {
             annotationArray.append(createAnnotation(latitude: latitude, longitude: longitude, title: title, address: address))
         }
         
+        // add annotation to map
         mapView.addAnnotations(annotationArray)
-        moveView(latitude: 37.785771, longitude: -122.406165)
+        // move view of map to the first annotation
+        if annotationArray.count > 0 {
+            let annotation = annotationArray[0]
+            moveView(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+        }
     }
 }
 
@@ -127,20 +142,26 @@ extension BusinessesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         currentOffset = 10
         
+        // change restaurent key search
+        Global.restaurentKeySearch = searchText
+        // search with search text input
         Business.search(with: searchText, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
                 self.businesses = businesses
             }
         }
         
+        // if search text empty -> search with default restaurent
         if searchText == "" {
-            Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+            Global.restaurentKeySearch = Global.restaurentKeySearchDefault
+            Business.search(with: Global.restaurentKeySearch, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
                 if let businesses = businesses {
                     self.businesses = businesses
                 }
             }
         }
         
+        self.addListAnnotation(from: businesses, to: self.mapView)
         self.foodTableView.reloadData()
     }
     
@@ -155,8 +176,8 @@ extension BusinessesViewController: UISearchBarDelegate {
 extension BusinessesViewController: UIScrollViewDelegate {
     
     func loadMoreData() {
-        self.currentOffset += 10
-        Business.search(with: "Thai", offset: currentOffset) { (businesses: [Business]?, error: Error?) in
+        self.currentOffset += Global.offsetPage
+        Business.search(with: Global.restaurentKeySearch, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
                 self.businesses = businesses
                 self.isMoreDataLoading = false
@@ -206,12 +227,20 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource, 
     }
     
     func filterData(filtersViewController: FiltersViewController, didUpdate filters: [String], isDeal: Bool, sortBy: Int, radius: Int) {
+        var r: Int?, sBy: YelpSortMode?
+        if radius != -1 {
+            r = radius
+        }
+        if sortBy != -1 {
+            sBy = YelpSortMode(rawValue: sortBy)
+        }
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        Business.search(with: "Thai", offset: self.currentOffset, sort: YelpSortMode(rawValue: sortBy), categories: filters, deals: isDeal) { (business: [Business]?, error: Error?) in
+        Business.search(with: Global.restaurentKeySearch, offset: self.currentOffset, sort: sBy, categories: filters, deals: isDeal, radius: r) { (business: [Business]?, error: Error?) in
             if let businesses = business {
                 self.businesses = businesses
                 self.foodTableView.reloadData()
+                self.addListAnnotation(from: businesses, to: self.mapView)
                 
                 // hide progress hub
                 MBProgressHUD.hide(for: self.view, animated: true)

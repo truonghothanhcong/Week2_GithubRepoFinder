@@ -46,10 +46,10 @@ class YelpClient: BDBOAuth1RequestOperationManager {
     }
 
     func search(with term: String, offset: Int?, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
-        return search(with: term, offset: offset, sort: nil, categories: nil, deals: nil/*, radius: nil*/, completion: completion)
+        return search(with: term, offset: offset, sort: nil, categories: nil, deals: nil, radius: nil, completion: completion)
     }
 
-    func search(with term: String, offset: Int?, sort: YelpSortMode?, categories: [String]?, deals: Bool?/*, radius: Int?*/, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
+    func search(with term: String, offset: Int?, sort: YelpSortMode?, categories: [String]?, deals: Bool?, radius: Int?, completion: @escaping ([Business]?, Error?) -> ()) -> AFHTTPRequestOperation {
         // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
 
         // Default the location to San Francisco
@@ -71,11 +71,9 @@ class YelpClient: BDBOAuth1RequestOperationManager {
             parameters["offset"] = offset! as AnyObject?
         }
         
-//        if radius != nil {
-//            parameters["radius_filter"] = radius! as AnyObject?
-//        }
-
-        print("aaaa\(parameters)")
+        if radius != nil {
+            parameters["radius_filter"] = (Double(radius!) / Global.milesPerMeter) as AnyObject?
+        }
 
         return self.get("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation, response: Any) in
             if let response = response as? NSDictionary {

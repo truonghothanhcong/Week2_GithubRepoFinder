@@ -188,7 +188,7 @@
             </objects>
             <point key="canvasLocation" x="912.79999999999995" y="770.46476761619192"/>
         </scene>
-        <!--Filters View Controller-->
+        <!--Filter-->
         <scene sceneID="aGx-nj-VZ0">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="VL1-Hm-FaJ" customClass="FiltersViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
@@ -300,7 +300,7 @@
                             <constraint firstItem="8Ko-2X-LAp" firstAttribute="top" secondItem="pKc-fC-cNl" secondAttribute="bottom" id="R2T-ER-Y11"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="8SM-XD-TLc">
+                    <navigationItem key="navigationItem" title="Filter" id="8SM-XD-TLc">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="0z2-DE-BUI">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
@@ -346,10 +346,14 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9uW-Wg-c49" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ufH-Y0-rVd">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ufH-Y0-rVd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

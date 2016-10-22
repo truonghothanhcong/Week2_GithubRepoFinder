@@ -8,183 +8,19 @@
 
 import UIKit
 
+enum sectionOfFilter: Int {
+    case sectionOfferingOfDeal = 0, distance, sortBy, category
+}
+
 @objc protocol FilterViewControllerDelegate {
     @objc optional func filterData(filtersViewController: FiltersViewController, didUpdate filters: [String], isDeal: Bool, sortBy: Int, radius: Int);
 }
 
 class FiltersViewController: UIViewController {
     
-    let categoriesArray: [Dictionary<String, String>] = [["name" : "Afghan", "code": "afghani"],
-                      ["name" : "African", "code": "african"],
-                      ["name" : "American, New", "code": "newamerican"],
-                      ["name" : "American, Traditional", "code": "tradamerican"],
-                      ["name" : "Arabian", "code": "arabian"],
-                      ["name" : "Argentine", "code": "argentine"],
-                      ["name" : "Armenian", "code": "armenian"],
-                      ["name" : "Asian Fusion", "code": "asianfusion"],
-                      ["name" : "Asturian", "code": "asturian"],
-                      ["name" : "Australian", "code": "australian"],
-                      ["name" : "Austrian", "code": "austrian"],
-                      ["name" : "Baguettes", "code": "baguettes"],
-                      ["name" : "Bangladeshi", "code": "bangladeshi"],
-                      ["name" : "Barbeque", "code": "bbq"],
-                      ["name" : "Basque", "code": "basque"],
-                      ["name" : "Bavarian", "code": "bavarian"],
-                      ["name" : "Beer Garden", "code": "beergarden"],
-                      ["name" : "Beer Hall", "code": "beerhall"],
-                      ["name" : "Beisl", "code": "beisl"],
-                      ["name" : "Belgian", "code": "belgian"],
-                      ["name" : "Bistros", "code": "bistros"],
-                      ["name" : "Black Sea", "code": "blacksea"],
-                      ["name" : "Brasseries", "code": "brasseries"],
-                      ["name" : "Brazilian", "code": "brazilian"],
-                      ["name" : "Breakfast & Brunch", "code": "breakfast_brunch"],
-                      ["name" : "British", "code": "british"],
-                      ["name" : "Buffets", "code": "buffets"],
-                      ["name" : "Bulgarian", "code": "bulgarian"],
-                      ["name" : "Burgers", "code": "burgers"],
-                      ["name" : "Burmese", "code": "burmese"],
-                      ["name" : "Cafes", "code": "cafes"],
-                      ["name" : "Cafeteria", "code": "cafeteria"],
-                      ["name" : "Cajun/Creole", "code": "cajun"],
-                      ["name" : "Cambodian", "code": "cambodian"],
-                      ["name" : "Canadian", "code": "New)"],
-                      ["name" : "Canteen", "code": "canteen"],
-                      ["name" : "Caribbean", "code": "caribbean"],
-                      ["name" : "Catalan", "code": "catalan"],
-                      ["name" : "Chech", "code": "chech"],
-                      ["name" : "Cheesesteaks", "code": "cheesesteaks"],
-                      ["name" : "Chicken Shop", "code": "chickenshop"],
-                      ["name" : "Chicken Wings", "code": "chicken_wings"],
-                      ["name" : "Chilean", "code": "chilean"],
-                      ["name" : "Chinese", "code": "chinese"],
-                      ["name" : "Comfort Food", "code": "comfortfood"],
-                      ["name" : "Corsican", "code": "corsican"],
-                      ["name" : "Creperies", "code": "creperies"],
-                      ["name" : "Cuban", "code": "cuban"],
-                      ["name" : "Curry Sausage", "code": "currysausage"],
-                      ["name" : "Cypriot", "code": "cypriot"],
-                      ["name" : "Czech", "code": "czech"],
-                      ["name" : "Czech/Slovakian", "code": "czechslovakian"],
-                      ["name" : "Danish", "code": "danish"],
-                      ["name" : "Delis", "code": "delis"],
-                      ["name" : "Diners", "code": "diners"],
-                      ["name" : "Dumplings", "code": "dumplings"],
-                      ["name" : "Eastern European", "code": "eastern_european"],
-                      ["name" : "Ethiopian", "code": "ethiopian"],
-                      ["name" : "Fast Food", "code": "hotdogs"],
-                      ["name" : "Filipino", "code": "filipino"],
-                      ["name" : "Fish & Chips", "code": "fishnchips"],
-                      ["name" : "Fondue", "code": "fondue"],
-                      ["name" : "Food Court", "code": "food_court"],
-                      ["name" : "Food Stands", "code": "foodstands"],
-                      ["name" : "French", "code": "french"],
-                      ["name" : "French Southwest", "code": "sud_ouest"],
-                      ["name" : "Galician", "code": "galician"],
-                      ["name" : "Gastropubs", "code": "gastropubs"],
-                      ["name" : "Georgian", "code": "georgian"],
-                      ["name" : "German", "code": "german"],
-                      ["name" : "Giblets", "code": "giblets"],
-                      ["name" : "Gluten-Free", "code": "gluten_free"],
-                      ["name" : "Greek", "code": "greek"],
-                      ["name" : "Halal", "code": "halal"],
-                      ["name" : "Hawaiian", "code": "hawaiian"],
-                      ["name" : "Heuriger", "code": "heuriger"],
-                      ["name" : "Himalayan/Nepalese", "code": "himalayan"],
-                      ["name" : "Hong Kong Style Cafe", "code": "hkcafe"],
-                      ["name" : "Hot Dogs", "code": "hotdog"],
-                      ["name" : "Hot Pot", "code": "hotpot"],
-                      ["name" : "Hungarian", "code": "hungarian"],
-                      ["name" : "Iberian", "code": "iberian"],
-                      ["name" : "Indian", "code": "indpak"],
-                      ["name" : "Indonesian", "code": "indonesian"],
-                      ["name" : "International", "code": "international"],
-                      ["name" : "Irish", "code": "irish"],
-                      ["name" : "Island Pub", "code": "island_pub"],
-                      ["name" : "Israeli", "code": "israeli"],
-                      ["name" : "Italian", "code": "italian"],
-                      ["name" : "Japanese", "code": "japanese"],
-                      ["name" : "Jewish", "code": "jewish"],
-                      ["name" : "Kebab", "code": "kebab"],
-                      ["name" : "Korean", "code": "korean"],
-                      ["name" : "Kosher", "code": "kosher"],
-                      ["name" : "Kurdish", "code": "kurdish"],
-                      ["name" : "Laos", "code": "laos"],
-                      ["name" : "Laotian", "code": "laotian"],
-                      ["name" : "Latin American", "code": "latin"],
-                      ["name" : "Live/Raw Food", "code": "raw_food"],
-                      ["name" : "Lyonnais", "code": "lyonnais"],
-                      ["name" : "Malaysian", "code": "malaysian"],
-                      ["name" : "Meatballs", "code": "meatballs"],
-                      ["name" : "Mediterranean", "code": "mediterranean"],
-                      ["name" : "Mexican", "code": "mexican"],
-                      ["name" : "Middle Eastern", "code": "mideastern"],
-                      ["name" : "Milk Bars", "code": "milkbars"],
-                      ["name" : "Modern Australian", "code": "modern_australian"],
-                      ["name" : "Modern European", "code": "modern_european"],
-                      ["name" : "Mongolian", "code": "mongolian"],
-                      ["name" : "Moroccan", "code": "moroccan"],
-                      ["name" : "New Zealand", "code": "newzealand"],
-                      ["name" : "Night Food", "code": "nightfood"],
-                      ["name" : "Norcinerie", "code": "norcinerie"],
-                      ["name" : "Open Sandwiches", "code": "opensandwiches"],
-                      ["name" : "Oriental", "code": "oriental"],
-                      ["name" : "Pakistani", "code": "pakistani"],
-                      ["name" : "Parent Cafes", "code": "eltern_cafes"],
-                      ["name" : "Parma", "code": "parma"],
-                      ["name" : "Persian/Iranian", "code": "persian"],
-                      ["name" : "Peruvian", "code": "peruvian"],
-                      ["name" : "Pita", "code": "pita"],
-                      ["name" : "Pizza", "code": "pizza"],
-                      ["name" : "Polish", "code": "polish"],
-                      ["name" : "Portuguese", "code": "portuguese"],
-                      ["name" : "Potatoes", "code": "potatoes"],
-                      ["name" : "Poutineries", "code": "poutineries"],
-                      ["name" : "Pub Food", "code": "pubfood"],
-                      ["name" : "Rice", "code": "riceshop"],
-                      ["name" : "Romanian", "code": "romanian"],
-                      ["name" : "Rotisserie Chicken", "code": "rotisserie_chicken"],
-                      ["name" : "Rumanian", "code": "rumanian"],
-                      ["name" : "Russian", "code": "russian"],
-                      ["name" : "Salad", "code": "salad"],
-                      ["name" : "Sandwiches", "code": "sandwiches"],
-                      ["name" : "Scandinavian", "code": "scandinavian"],
-                      ["name" : "Scottish", "code": "scottish"],
-                      ["name" : "Seafood", "code": "seafood"],
-                      ["name" : "Serbo Croatian", "code": "serbocroatian"],
-                      ["name" : "Signature Cuisine", "code": "signature_cuisine"],
-                      ["name" : "Singaporean", "code": "singaporean"],
-                      ["name" : "Slovakian", "code": "slovakian"],
-                      ["name" : "Soul Food", "code": "soulfood"],
-                      ["name" : "Soup", "code": "soup"],
-                      ["name" : "Southern", "code": "southern"],
-                      ["name" : "Spanish", "code": "spanish"],
-                      ["name" : "Steakhouses", "code": "steak"],
-                      ["name" : "Sushi Bars", "code": "sushi"],
-                      ["name" : "Swabian", "code": "swabian"],
-                      ["name" : "Swedish", "code": "swedish"],
-                      ["name" : "Swiss Food", "code": "swissfood"],
-                      ["name" : "Tabernas", "code": "tabernas"],
-                      ["name" : "Taiwanese", "code": "taiwanese"],
-                      ["name" : "Tapas Bars", "code": "tapas"],
-                      ["name" : "Tapas/Small Plates", "code": "tapasmallplates"],
-                      ["name" : "Tex-Mex", "code": "tex-mex"],
-                      ["name" : "Thai", "code": "thai"],
-                      ["name" : "Traditional Norwegian", "code": "norwegian"],
-                      ["name" : "Traditional Swedish", "code": "traditional_swedish"],
-                      ["name" : "Trattorie", "code": "trattorie"],
-                      ["name" : "Turkish", "code": "turkish"],
-                      ["name" : "Ukrainian", "code": "ukrainian"],
-                      ["name" : "Uzbek", "code": "uzbek"],
-                      ["name" : "Vegan", "code": "vegan"],
-                      ["name" : "Vegetarian", "code": "vegetarian"],
-                      ["name" : "Venison", "code": "venison"],
-                      ["name" : "Vietnamese", "code": "vietnamese"],
-                      ["name" : "Wok", "code": "wok"],
-                      ["name" : "Wraps", "code": "wraps"],
-                      ["name" : "Yugoslav", "code": "yugoslav"]]
-    let sortByArray = ["Best match", "Distance", "Highest rated"]
-    let distanceArray = [1, 5, 10, 15, 20]
+    let categoriesArray = Global.categoriesArray
+    let sortByArray = Global.sortByArray
+    let distanceArray = Global.distanceArray
     var isOfferingDeal = false
     var switchState = [Int : Bool] ()
     var selectedDistance = -1
@@ -223,14 +59,12 @@ class FiltersViewController: UIViewController {
         
         self.dismiss(animated: true, completion: nil)
     }
-    
-
 }
 
 extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, SwitchCellDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {         // state for deal
+        if indexPath.section == sectionOfFilter.sectionOfferingOfDeal.rawValue {    // state for deal
             let cell = filtersTableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath) as! SwitchCell
             
             cell.categoryLabel.text = "Offering a Deal"
@@ -239,7 +73,7 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
             cell.delegate = self
             
             return cell
-        } else if indexPath.section == 1 {  // state for distance
+        } else if indexPath.section == sectionOfFilter.distance.rawValue {          // state for distance
             if indexPath.row == 0 {
                 let cell = filtersTableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath) as! SwitchCell
                 
@@ -257,7 +91,7 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
                 
                 return cell
             }
-        } else if indexPath.section == 2 {  // state for sort by
+        } else if indexPath.section == sectionOfFilter.sortBy.rawValue {            // state for sort by
             if indexPath.row == 0 {
                 let cell = filtersTableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath) as! SwitchCell
                 
@@ -281,7 +115,6 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
                 
                 return cell
             }
-            
             let cell = filtersTableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath) as! SwitchCell
             
             cell.categoryLabel.text = self.categoriesArray[indexPath.row]["name"]
@@ -294,37 +127,40 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        switch section {
+        case sectionOfFilter.sectionOfferingOfDeal.rawValue:
             return 1
-        } else if section == 1 {
+        case sectionOfFilter.distance.rawValue:
             return distanceArray.count + 1
-        } else if section == 2 {
+        case sectionOfFilter.sortBy.rawValue:
             return sortByArray.count + 1
-        } else {
+        case sectionOfFilter.category.rawValue:
             if isExpandCategory {
                 return categoriesArray.count
             } else {
                 return 4
             }
+        default:
+            return 0
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
-        case 1:
+        case sectionOfFilter.distance.rawValue:
             if isSwitchDistanceOn {
-                return 44
+                return CGFloat(Global.rowHeightFilter)
             } else {
-                return indexPath.row == 0 ? 44 : 0
+                return indexPath.row == 0 ? CGFloat(Global.rowHeightFilter) : 0
             }
-        case 2:
+        case sectionOfFilter.sortBy.rawValue:
             if isSwitchSortOn {
-                return 44
+                return CGFloat(Global.rowHeightFilter)
             } else {
-                return indexPath.row == 0 ? 44 : 0
+                return indexPath.row == 0 ? CGFloat(Global.rowHeightFilter) : 0
             }
         default:
-            return 44
+            return CGFloat(Global.rowHeightFilter)
         }
     }
     
@@ -337,11 +173,11 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 1:
+        case sectionOfFilter.distance.rawValue:
             return "Distance"
-        case 2:
+        case sectionOfFilter.sortBy.rawValue:
             return "Sort By"
-        case 3:
+        case sectionOfFilter.category.rawValue:
             return "Category"
         default:
             return ""
@@ -349,17 +185,19 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        switch indexPath.section {
+        case sectionOfFilter.distance.rawValue:
             selectedDistance = distanceArray[indexPath.row - 1]
-            filtersTableView.reloadSections(IndexSet(integer: 1), with: .none)
-        } else if indexPath.section == 2 {
+            filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.distance.rawValue), with: .none)
+        case sectionOfFilter.sortBy.rawValue:
             sortBySelected = indexPath.row - 1
-            filtersTableView.reloadSections(IndexSet(integer: 2), with: .none)
-        } else if indexPath.section == 3 {
+            filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.sortBy.rawValue), with: .none)
+        case sectionOfFilter.category.rawValue:
             if !isExpandCategory && indexPath.row == 3 {
                 isExpandCategory = true
-                filtersTableView.reloadSections(IndexSet(integer: 3), with: .automatic)
+                filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.category.rawValue), with: .automatic)
             }
+        default: break
         }
     }
     
@@ -370,11 +208,10 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
     func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
         let indexPath = filtersTableView.indexPath(for: switchCell)
         
-        if indexPath?.section == 0 {            // if is offering a deal
+        switch indexPath!.section {
+        case sectionOfFilter.sectionOfferingOfDeal.rawValue:
             isOfferingDeal = value
-        } else if indexPath?.section == 3 {     // if is category
-            switchState[indexPath!.row] = value
-        } else if indexPath?.section == 1 {     // if is distance
+        case sectionOfFilter.distance.rawValue:
             isSwitchDistanceOn = value
             
             if isSwitchDistanceOn {
@@ -384,9 +221,8 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
             } else {
                 selectedDistance = -1
             }
-            //print("aaaa\(isSwitchDistanceOn)")
             filtersTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-        } else {                                // if is sort by
+        case sectionOfFilter.sortBy.rawValue:
             isSwitchSortOn = value
             
             if isSwitchSortOn {
@@ -396,9 +232,10 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
             } else {
                 sortBySelected = -1
             }
-            //print("aaaa\(isSwitchSortOn)")
             filtersTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
+        case sectionOfFilter.category.rawValue:
+            switchState[indexPath!.row] = value
+        default: break
         }
     }
-    
 }
