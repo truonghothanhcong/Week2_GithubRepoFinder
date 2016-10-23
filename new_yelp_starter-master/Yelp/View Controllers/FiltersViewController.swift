@@ -187,11 +187,15 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource, Swi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case sectionOfFilter.distance.rawValue:
-            selectedDistance = distanceArray[indexPath.row - 1]
-            filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.distance.rawValue), with: .none)
+            if indexPath.row != 0 {
+                selectedDistance = distanceArray[indexPath.row - 1]
+                filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.distance.rawValue), with: .none)
+            }
         case sectionOfFilter.sortBy.rawValue:
-            sortBySelected = indexPath.row - 1
-            filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.sortBy.rawValue), with: .none)
+            if indexPath.row != 0 {
+                sortBySelected = indexPath.row - 1
+                filtersTableView.reloadSections(IndexSet(integer: sectionOfFilter.sortBy.rawValue), with: .none)
+            }
         case sectionOfFilter.category.rawValue:
             if !isExpandCategory && indexPath.row == 3 {
                 isExpandCategory = true
