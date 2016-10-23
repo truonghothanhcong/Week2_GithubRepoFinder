@@ -208,15 +208,16 @@ extension BusinessesViewController: UISearchBarDelegate {
 extension BusinessesViewController: UIScrollViewDelegate {
     
     func loadMoreData() {
-        self.currentOffset += Global.offsetPage
+        currentOffset += Global.offsetPage
         Business.search(with: Global.restaurentKeySearch, offset: currentOffset) { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
-                self.businesses = businesses
+                self.businesses = self.businesses + businesses
                 self.isMoreDataLoading = false
                 
                 // Stop the loading indicator
                 self.loadingMoreView!.stopAnimating()
                 
+                self.addListAnnotation(from: self.businesses, to: self.mapView)
                 self.foodTableView.reloadData()
             }
         }
