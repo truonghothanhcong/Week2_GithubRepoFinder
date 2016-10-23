@@ -256,6 +256,8 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource, 
         
         cell.business = businesses[indexPath.row]
         
+        cell.selectionStyle = UITableViewCellSelectionStyle.none;
+        
         return cell
     }
     

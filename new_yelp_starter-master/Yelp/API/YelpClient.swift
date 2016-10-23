@@ -74,7 +74,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         if radius != nil {
             parameters["radius_filter"] = (Double(radius!) / Global.milesPerMeter) as AnyObject?
         }
-
+        
         return self.get("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation, response: Any) in
             if let response = response as? NSDictionary {
                 let dictionaries = response["businesses"] as? [NSDictionary]
